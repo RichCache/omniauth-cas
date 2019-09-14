@@ -115,11 +115,16 @@ module OmniAuth
         extract_url if options['url']
         validate_cas_setup
         @cas_url ||= begin
-          uri = Addressable::URI.new
-          uri.host = options.host
-          uri.scheme = options.ssl ? 'https' : 'http'
-          uri.port = options.port
-          uri.path = options.path
+          uri = URI.parse(options.host)
+          # uri.host = if options.host["https://"]
+          #              options.host[8..-1]
+          #            else
+          #              options.host[7..-1]
+          #            end
+          # uri.scheme = options.host["https"] || options.host["http"]
+          # uri.scheme = options.ssl ? 'https' : 'http'
+          # uri.port = options.port
+          # uri.path = options.path
           uri.to_s
         end
       end
@@ -153,7 +158,7 @@ module OmniAuth
         service_url = Addressable::URI.parse(service_url)
         service_url.query_values = service_url.query_values.tap { |qs| qs.delete('ticket') }
         cas_url + append_params(options.service_validate_url, {
-          service: service_url.to_s,
+          service: service_url.to_s.chomp("?"),
           ticket: ticket
         })
       end

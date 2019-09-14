@@ -36,6 +36,15 @@ Rails.application.config.middleware.use OmniAuth::Builder do
 end
 ```
 
+# config for devise
+```
+add below demo in devise.rb
+
+  config.omniauth :cas, host: 'cas.example.com'
+
+config the model
+  devise :omniauthable, :omniauth_providers => [:cas]
+```
 ### Configuration Options
 
 #### Required

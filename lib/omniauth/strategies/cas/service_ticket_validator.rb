@@ -51,12 +51,12 @@ module OmniAuth
                 # There are no child elements
                 if e.element_children.count == 0
                   hash[node_name] = e.content
-                elsif e.element_children.count
+                else
                   # JASIG style extra attributes
                   if node_name == 'attributes'
                     hash.merge!(parse_user_info(e))
                   else
-                    hash[node_name] = [] if hash[node_name].nil?
+                    hash[node_name] = [] if hash[node_name].blank?
                     hash[node_name].push(parse_user_info(e))
                   end
                 end
